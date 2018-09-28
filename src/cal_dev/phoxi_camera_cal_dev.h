@@ -7,6 +7,7 @@
 # include "phoxi_camera/GetFrame.h"
 # include "phoxi_camera/GetDeviceList.h"
 # include "sensor_msgs/Image.h"
+# include "sensor_msgs/PointCloud2.h"
 using namespace std;
 using namespace ros;
 #endif
