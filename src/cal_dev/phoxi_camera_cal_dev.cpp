@@ -10,6 +10,10 @@ void depth_im_call_back(const sensor_msgs::Image::ConstPtr& depth_im)
 void pcl_call_back(const sensor_msgs::PointCloud2::ConstPtr& pcl_map)
 {
     ROS_INFO("Point cloud map received in callback function!!!");
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+    pcl::PCLPointCloud2 pcl_pc;
+    pcl_conversions::toPCL(*msg, pcl_pc);
+    pcl::fromPCLPointCloud2(pcl_pc, cloud);
 }
 
 bool phoxi_connect(const string& cam_id)

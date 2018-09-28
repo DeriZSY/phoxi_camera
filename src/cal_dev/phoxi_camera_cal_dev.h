@@ -1,14 +1,19 @@
 #ifndef POHXI_CAMERA_CAL_DEV
 #define POHXI_CAMERA_CAL_DEV
-# include <string>
-# include <iostream>
-# include "ros/ros.h"
-# include "phoxi_camera/ConnectCamera.h"
-# include "phoxi_camera/SaveFrame.h"
-# include "phoxi_camera/GetFrame.h"
-# include "phoxi_camera/GetDeviceList.h"
-# include "sensor_msgs/Image.h"
-# include "sensor_msgs/PointCloud2.h"
+#include <string>
+#include <iostream>
+#include "ros/ros.h"
+#include "phoxi_camera/ConnectCamera.h"
+#include "phoxi_camera/SaveFrame.h"
+#include "phoxi_camera/GetFrame.h"
+#include "phoxi_camera/GetDeviceList.h"
+#include "sensor_msgs/Image.h"
+#include "sensor_msgs/PointCloud2.h"
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/PointCloud2.h>
+#include <pcl/PointCloud.h>
 
 // Macro Definition for coloring 
 #define RD(str) "\033[31;5m"#str"\033[0m"
