@@ -132,8 +132,8 @@ target_link_libraries(
 
 #### New CPP Files ######
 set (SOURCE_FILES 
-     src/phoxi_camera_test_cpp.cpp
-     src/phoxi_camera_test_cpp.h  
+     src/api_template/phoxi_camera_test_cpp.cpp
+     src/api_template/phoxi_camera_test_cpp.h  
 )
 
 set (SOURCE_FILES 
@@ -141,7 +141,7 @@ set (SOURCE_FILES
      src/cal_dev/phoxi_camera_cal_dev.h  
 )
 
-add_executable(phoxi_camera_test src/phoxi_camera_test_cpp.cpp)
+add_executable(phoxi_camera_test src/api_template/phoxi_camera_test_cpp.cpp)
 add_executable(phoxi_camera_cal_dev src/cal_dev/phoxi_camera_cal_dev.cpp)
 
 target_link_libraries(phoxi_camera_test ${catkin_LIBRARIES})
@@ -152,7 +152,7 @@ add_dependencies(phoxi_camera_cal_dev ${catkin_EXPORTED_TARGETS})
 
 
 
-#### New CPP Files ######
+#### New CPP Files End ######
 
 install(
   PROGRAMS
