@@ -44,16 +44,19 @@ bool get_frame(const int id)
 
 int main (int argc, char** argv)
 {
+    double start, end, duration;
+    // start = clock();
     ros::init(argc, argv, "phoxi_cal_dev");
     ros::NodeHandle n;
     // Connect to the camera on PhoxiControler
     bool connectCamera_success = phoxi_connect("1711004");
     bool getFrame_success = get_frame(-1);
-    cout << GR(Color Test)<<endl;
     if (connectCamera_success && getFrame_success)
     {
         ros::Subscriber sub_depthMap = n.subscribe("/phoxi_camera/depth_map",1000,depth_im_call_back);
         ros::Subscriber sub_pointCloud = n.subscribe("/phoxi_camera/pointcloud", 1000, pcl_call_back);
+        // end = clock();
+        // cout <<GR(Duration:) << ((end - start)/1000)<< endl;
         ros::spin();
     }
     return 0;
