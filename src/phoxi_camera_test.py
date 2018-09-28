@@ -3,41 +3,33 @@
 import rospy
 from phoxi_camera.srv import *
 from std_srvs.srv import *
-import perception as p
+from time import sleep
+from sensor_msgs.msg import Image
+from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import PointCloud
 
-def depth_im_callback(self, msg):
-    """Callback for handling depth images.
-    """
-    cur_depth_im = DepthImage(self._bridge.imgmsg_to_cv2(msg) / 1000.0, frame=self._frame)
-    print "Get current depth image!"
+def depth_im_callback(msg):
+    rospy.loginfo('Get Image')
+
+
+document_path = "/home/bionicdl/calibration_images/"
 
 if __name__ == '__main__':
     
-    # initialize the ROS node
+    # initialize the ROS nod
     rospy.init_node('Photoneo_Control_Node')
 
-    sensor = p.PhoXiSensor(device_name='1711004')
-    #sensor.start()
-    success = rospy.ServiceProxy('phoxi_camera/connect_camera', ConnectCamera)('1711004').success
-    if not success:
-        print "Could not connect to PhoXi sensor!"
-    depth_im_sub = rospy.Subscriber('/phoxi_camera/depth_map', ImageMessage, depth_im_callback)
-    rospy.loginfo('Sensor Running')
+    message = rospy.ServiceProxy('phoxi_camera/connect_camera', ConnectCamera)('1711004').message
+    sleep(2)
+    rospy.loginfo(message)
+    # img_msg = rospy.ServiceProxy('phoxi_camera/get_frame', SaveFrame)(-1,document_path+'test_img.VTK').message
+    im_id = rospy.ServiceProxy('phoxi_camera/trigger_image',TriggerImage)().id 
+    im_msg = rospy.ServiceProxy('phoxi_camera/get_frame', GetFrame)(im_id).message
+    rospy.loginfo(im_id)
+    sub = rospy.Subscriber("phoxi_camera/depth_map", Image, depth_im_callback)
     
-    # get the images from the sensor
-    #color_image, depth_image, _ = sensor.frames()
-
-    rospy.ServiceProxy('phoxi_camera/start_acquisition', Empty)()
-    rospy.ServiceProxy('phoxi_camera/trigger_image', TriggerImage)()
-
-        self._cur_color_im = None
-        self._cur_depth_im = None
-        self._cur_normal_map = None
-
-        rospy.ServiceProxy('phoxi_camera/get_frame', GetFrame)(-1)
-        print "Finish get_frame!"
-    print "frames:"
-    #color_image
-
+    im_id = rospy.ServiceProxy('phoxi_camera/trigger_image',TriggerImage)().id 
+    img_msg = rospy.ServiceProxy('phoxi_camera/save_frame', SaveFrame)(im_id, document_path+'test_img.VTK').message
+    rospy.loginfo(img_msg)
     rospy.spin()
 

@@ -93,6 +93,15 @@ add_executable(
   src/RosInterface.cpp
 )
 
+set (SOURCE_FILES 
+     src/phoxi_camera_test_cpp.cpp
+     src/phoxi_camera_test_cpp.h  
+)
+
+add_executable(phoxi_camera_test src/phoxi_camera_test_cpp.cpp)
+target_link_libraries(phoxi_camera_test ${catkin_LIBRARIES})
+add_dependencies(phoxi_camera_test ${catkin_EXPORTED_TARGETS})
+
 add_dependencies(
   ${PROJECT_NAME}_Ros_Interface
   ${PROJECT_NAME}/_PhoXi_Interfece

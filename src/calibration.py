@@ -1,7 +1,7 @@
 import pcl
 import numpy as np
 from sensor_stick.pcl_helper import *
-
+# p_base 
 p_robot = np.array([[0.27265, -0.65591, 0.16760, 1],
                [0.35291, -0.65217, 0.13476, 1],
                [0.33833, -0.71059, 0.14230, 1],
@@ -10,22 +10,27 @@ p_robot = p_robot.transpose()
 
 p_camera = []
 
-# process point clout 
+# process point cloud
 for i in range(4):
+    # load obtained point cloud
     cloud = pcl.load_XYZRGB('waypoint%s.ply'%(i+1))
     # TODO: PassThrough Filter
+    # roughly slicing for the point cloud 
     passthrough = cloud.make_passthrough_filter()
+    # filtering in z axis from 380 to 435
     filter_axis = 'z'
     passthrough.set_filter_field_name (filter_axis)
     axis_min = 380
     axis_max = 435
     passthrough.set_filter_limits (axis_min, axis_max)
     cloud_filtered = passthrough.filter()
+    
     # TODO: Statistical outlier filter
     outlier_filter = cloud_filtered.make_statistical_outlier_filter()
     outlier_filter.set_mean_k(50)
     outlier_filter.set_std_dev_mul_thresh(1.0)
     cloud_filtered = outlier_filter.filter()
+    
     # TODO: Euclidean Clustering
     white_cloud = XYZRGB_to_XYZ(cloud_filtered)
     tree = white_cloud.make_kdtree()
@@ -36,12 +41,15 @@ for i in range(4):
     ec.set_SearchMethod(tree)
     cluster_indices = ec.Extract()
     tool_index = []
+    
     # select the tool0 plane has the largest number of points
     for cluster in cluster_indices:
         if len(cluster)>len(tool_index):
             tool_index = cluster
     tool0 = white_cloud.extract(tool_index)
     pcl.save(tool0, "tool0_%s.pcd"%(i+1))
+
+
     # Ransac circle segmentation
     seg = tool0.make_segmenter()
     seg.set_model_type(pcl.SACMODEL_CIRCLE3D)
@@ -54,16 +62,20 @@ for i in range(4):
     clc = tool0.extract(inliers, negative=False)
     outliers = tool0.extract(inliers, negative=True)
     points_list = []
+
     for data in clc:
         points_list.append([data[0], data[1], data[2], rgb_to_float([0,255,0])])
     for data in outliers:
         points_list.append([data[0], data[1], data[2], rgb_to_float([255,0,0])])
+    
     tool0_c = pcl.PointCloud_PointXYZRGB()
     tool0_c.from_list(points_list)
     pcl.save(tool0_c, "tool0_c%s.pcd"%(i+1))
+    
     p_camera.append(coefficients[:3])
 
 p_camera_ = np.matrix(np.concatenate((np.array(p_camera).transpose()/1000, np.ones([1,4])),axis=0))
+
 p_camera_reverse = p_camera_.getI()
 
 H = np.matmul(p_robot, p_camera_reverse)

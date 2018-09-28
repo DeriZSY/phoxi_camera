@@ -34,7 +34,6 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "phoxi_camera");
 
     RosInterface interface;
-
     ros::spin();
     return 0;
 }
