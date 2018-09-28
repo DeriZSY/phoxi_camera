@@ -1,6 +1,9 @@
 import pcl
 import numpy as np
+from pcl_msgs import *
 from sensor_stick.pcl_helper import *
+import rospy 
+
 # p_base 
 p_robot = np.array([[0.27265, -0.65591, 0.16760, 1],
                [0.35291, -0.65217, 0.13476, 1],
@@ -11,9 +14,10 @@ p_robot = p_robot.transpose()
 p_camera = []
 
 # process point cloud
-for i in range(4):
+# for i in range(4):
+def hand_eye_calibrate(cloud):
     # load obtained point cloud
-    cloud = pcl.load_XYZRGB('waypoint%s.ply'%(i+1))
+    # cloud = pcl.load_XYZRGB('waypoint%s.ply'%(i+1))
     # TODO: PassThrough Filter
     # roughly slicing for the point cloud 
     passthrough = cloud.make_passthrough_filter()
@@ -87,7 +91,9 @@ al, be, ga = tf.transformations.euler_from_matrix(R, 'sxyz')
 
 [16.695629119873047, -16.15144157409668, 413.2391662597656, 29.98028564453125, -0.015968363732099533, 0.019328217953443527, -0.9996856451034546]
 
-
+if __name__ == '__main__':
+    rospy.init_node('Hand_Eye_Calibration')
+    sub_pcl = rospy.Subscriber("pcl_publisher", PointCloud, hand_eye_calibrate)
 
 
 
