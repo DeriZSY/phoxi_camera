@@ -7,7 +7,8 @@ from std_srvs.srv import *
 from time import sleep
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import PointCloud2
-from sensor_msgs.msg import PointCloud
+import pcl 
+import numpy as np 
 
 
 def depthIm_callback(depthIm):
@@ -15,8 +16,15 @@ def depthIm_callback(depthIm):
 
 def pcl_callback(point_cloud):
     rospy.loginfo('Get Point Cloud')
+    valid = point_cloud.is_dense
+    if valid:
+        rospy.loginfo('Point Step: %d, Row Step:%d'%(point_cloud.point_step, point_cloud.row_step))
+    p = pcl.PointCloud()
+    p.from_list(point_cloud.data)
+    rospy.loginfo(p.is_dense())
 
-start = time.time()
+
+# start = time.time()
 document_path = "/home/bionicdl/calibration_images/"
 
 if __name__ == '__main__':
