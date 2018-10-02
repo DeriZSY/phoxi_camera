@@ -136,20 +136,25 @@ set (SOURCE_FILES
      src/api_template/phoxi_camera_test_cpp.h  
 )
 
-set (SOURCE_FILES 
-     src/cal_dev/phoxi_camera_cal_dev.cpp
-     src/cal_dev/phoxi_camera_cal_dev.h  
-)
-
 add_executable(phoxi_camera_test src/api_template/phoxi_camera_test_cpp.cpp)
-add_executable(phoxi_camera_cal_dev src/cal_dev/phoxi_camera_cal_dev.cpp)
-
 target_link_libraries(phoxi_camera_test ${catkin_LIBRARIES})
-target_link_libraries(phoxi_camera_cal_dev ${catkin_LIBRARIES})
-
 add_dependencies(phoxi_camera_test ${catkin_EXPORTED_TARGETS})
-add_dependencies(phoxi_camera_cal_dev ${catkin_EXPORTED_TARGETS})
 
+set (SOURCE_FILES 
+     src/cal_dev/phoxi_camera_cal_camShooter.cpp
+     src/cal_dev/phoxi_camera_cal_lib.h  
+)
+add_executable(phoxi_camera_cal_camShooter src/cal_dev/phoxi_camera_cal_camShooter.cpp)
+target_link_libraries(phoxi_camera_cal_camShooter ${catkin_LIBRARIES})
+add_dependencies(phoxi_camera_cal_camShooter ${catkin_EXPORTED_TARGETS})
+
+set (SOURCE_FILES 
+     src/cal_dev/phoxi_camera_cal_listener.cpp
+     src/cal_dev/phoxi_camera_cal_lib.h  
+)
+add_executable(phoxi_camera_cal_listener src/cal_dev/phoxi_camera_cal_listener.cpp)
+target_link_libraries(phoxi_camera_cal_listener ${catkin_LIBRARIES})
+add_dependencies(phoxi_camera_cal_listener ${catkin_EXPORTED_TARGETS})
 
 
 #### New CPP Files End ######
