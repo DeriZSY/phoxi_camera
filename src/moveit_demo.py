@@ -13,17 +13,18 @@ from mpl_toolkits.mplot3d import Axes3D
 NUM_ATTEMPS = 1
 PLANNER_NAME = "RRTConnect"
 
+# initialize moveit_commander and rospy node
 moveit_commander.roscpp_initialize(sys.argv)
 rospy.init_node('move_group_python_interface_tutorial',
                   anonymous=True)
 
+# instantiate a RobotCommander object
 robot = moveit_commander.RobotCommander()
-
+# instantiate a Planning SceneInterface object
 scene = moveit_commander.PlanningSceneInterface()
-
+# Instantiate a Move Group Commander object
 group = moveit_commander.MoveGroupCommander("Arm")
-
-
+# publish trajectory to RViz
 display_trajectory_publisher = rospy.Publisher(
                                       '/move_group/display_planned_path',
                                  moveit_msgs.msg.DisplayTrajectory,
