@@ -36,6 +36,11 @@ void image_capturing (const string& cam_id)
 {
     static int times = 0;
     times++;
+    // if (times == 1)
+    // {
+    //     cout << GR(Initializing Photoneo Camera) << endl;
+    //     ros::Duration(5).sleep();
+    // }
     cout << GR([#INFO] Calling Time:) << times << endl;
     double start, end, duration;
     // start = clock();
