@@ -45,32 +45,40 @@ group.set_planning_time(5)
 plans_pick = []
 plans_place = []
 for i in range(2):
-  group.set_start_state_to_current_state()
-  group.clear_pose_targets()
-  if abs(group.get_current_joint_values()[0]-pick_joint_positions[0])<0.001:
-    group.set_joint_value_target(place_joint_positions)
-    for j in range(8):
+  group.set_start_state_to_current_state() # set start sate to current position
+  group.clear_pose_targets() # clear previous targets 
+
+  # if: ... set joint value target to place joint positions
+  if abs(group.get_current_joint_values()[0]-pick_joint_positions[0])<0.001: 
+    group.set_joint_value_target(place_joint_positions) 
+    for j in range(8): # try to get plans for 8 times 
       plan = group.plan()
-      if len(plan.joint_trajectory.points)==0:
+      if len(plan.joint_trajectory.points)==0: 
         continue
       plans_place.append(plan)
       rospy.sleep(0.5)
+    # quit if cannot get a plan 
     if len(plans_place)==0:
       print('Fail to get any place plan!')
       break
+    # execute the first available plan
     group.execute(plans_place[0])
     rospy.sleep(3)
+  
+  # else: ... set joint value target to pick joint positions
   else:
     group.set_joint_value_target(pick_joint_positions)
-    for j in range(8):
+    for j in range(8):# try to get a plan for 8 times
       plan = group.plan()
       if len(plan.joint_trajectory.points)==0:
         continue
       plans_pick.append(plan)
       rospy.sleep(0.5)
+    # quit if cannot get a plan
     if len(plans_pick)==0:
       print('Fail to get any pick plan!')
       break
+    # execute first plan available
     group.execute(plans_pick[0])
     rospy.sleep(3)
 
