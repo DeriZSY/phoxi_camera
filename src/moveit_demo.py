@@ -34,6 +34,8 @@ display_trajectory_publisher = rospy.Publisher(
 # above bin picking
 #pick_joint_positions = [-1.5534956288425719, -1.6570561804545578, 0.9666828931631055, -0.8975538597476668, -1.588098231510399, 9.098554519005121e-05]
 # deep picking
+
+# target position
 pick_joint_positions = [-1.6571229807091412, -1.8987741030128207, 1.8297206708493179, -1.4844425337884575, -1.588071931215888, -0.10369734183303081]
 place_joint_positions = [4.72094163298607e-05, -1.2083540076804813, 1.3808265007842797, -1.7260865345759318, -1.5880401480919681, -9.419479356147349e-05]
 
@@ -51,7 +53,7 @@ for i in range(2):
 
   # if: ... set joint value target to place joint positions
   if abs(group.get_current_joint_values()[0]-pick_joint_positions[0])<0.001: 
-    group.set_joint_value_target(place_joint_positions) 
+    group.set_joint_value_target(place_joint_positions) # set target 
     for j in range(8): # try to get plans for 8 times 
       plan = group.plan()
       if len(plan.joint_trajectory.points)==0: 
