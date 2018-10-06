@@ -4,7 +4,7 @@ project(phoxi_camera)
 find_package(PhoXi REQUIRED CONFIG PATHS "$ENV{PHOXI_CONTROL_PATH}")
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(PCL 1.8 REQUIRED)
 find_package(catkin REQUIRED
   COMPONENTS
     roscpp
@@ -14,6 +14,7 @@ find_package(catkin REQUIRED
     sensor_msgs
     pcl_ros
     pcl_conversions
+    #pcl_visualization
     dynamic_reconfigure
     diagnostic_updater
     geometry_msgs
@@ -156,6 +157,13 @@ add_executable(phoxi_camera_cal_listener src/cal_dev/phoxi_camera_cal_listener.c
 target_link_libraries(phoxi_camera_cal_listener ${catkin_LIBRARIES})
 add_dependencies(phoxi_camera_cal_listener ${catkin_EXPORTED_TARGETS})
 
+set (SOURCE_FILES 
+     src/cal_dev/phoxi_camera_cal_test.cpp
+     src/cal_dev/phoxi_camera_cal_lib.h  
+)
+add_executable(phoxi_camera_cal_test src/cal_dev/phoxi_camera_cal_test.cpp)
+target_link_libraries(phoxi_camera_cal_test ${catkin_LIBRARIES})
+add_dependencies(phoxi_camera_cal_test ${catkin_EXPORTED_TARGETS})
 
 #### New CPP Files End ######
 
