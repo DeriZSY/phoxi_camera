@@ -15,8 +15,14 @@
 #include <pcl/PCLPointCloud2.h>
 #include <pcl/io/io.h>
 #include <pcl/io/pcd_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/visualization/cloud_viewer.h>
+#include <pcl/visualization/pcl_visualizer.h>
 // #include <pcl/PointCloud.h>
-
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/statistical_outlier_removal.h>
+#include <pcl/segmentation/conditional_euclidean_clustering.h>
+#include <pcl/segmentation/extract_clusters.h>
 // Macro Definition for coloring 
 #define RD(str) "\033[31;5m"#str"\033[0m"
 #define GR(str) "\033[32;5m"#str"\033[0m"

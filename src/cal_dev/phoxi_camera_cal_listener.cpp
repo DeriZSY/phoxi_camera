@@ -1,6 +1,7 @@
 # include "phoxi_camera_cal_lib.h"
 using namespace std;
 using namespace ros;
+using namespace pcl;
 
 void depth_im_call_back(const sensor_msgs::Image::ConstPtr& depth_im)
 {
@@ -17,13 +18,15 @@ void pcl_call_back(const sensor_msgs::PointCloud2::ConstPtr& pcl_map)
     ros::param::get("~image_path", im_path);
     im_path = im_path + to_string(count) + ".PCD";
     cout<< GR([#INFO] Image Path: ) << im_path << endl;
-    pcl::PointCloud<pcl::PointXYZ> cloud;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
     pcl::PCLPointCloud2 pcl_pc;
     pcl_conversions::toPCL(*pcl_map, pcl_pc);
-    pcl::fromPCLPointCloud2(pcl_pc, cloud);
-    pcl::io::savePCDFile(im_path,cloud);
+    pcl::fromPCLPointCloud2(pcl_pc, *cloud);
+    pcl::io::savePCDFile(im_path,*cloud);
     return;
 }
+
+// void passthrough(pcl::PointCloud)
 
 int main(int argc,char** argv)
 {
