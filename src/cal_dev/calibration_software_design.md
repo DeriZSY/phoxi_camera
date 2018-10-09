@@ -26,3 +26,12 @@
 5. Planning and execute all points on the all_around path
 6. At each point: Phoxi_camera: get frame and store in appointed directory
 7. Execute calibration algorithm to get precise calibration results
+
+
+
+### Current problem:
+
+1. Coordinate representation in Moveit 
+   Pose.msg:
+   Point position (float64 x y z)
+   Quaternion orientation (float64 w+xi+yj+zk)
