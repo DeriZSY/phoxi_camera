@@ -16,13 +16,15 @@ void pcl_call_back(const sensor_msgs::PointCloud2::ConstPtr& pcl_map)
     ROS_INFO("Point cloud map received in callback function!!!");
     string im_path;
     ros::param::get("~image_path", im_path);
-    im_path = im_path + to_string(count) + ".PCD";
+    string im_path_ply = im_path + ".ply";
+    string im_path_pcd = im_path + ".PCD";
     cout<< GR([#INFO] Image Path: ) << im_path << endl;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
+    pcl::PointCloud<pcl::PointXYZ> cloud;
     pcl::PCLPointCloud2 pcl_pc;
     pcl_conversions::toPCL(*pcl_map, pcl_pc);
-    pcl::fromPCLPointCloud2(pcl_pc, *cloud);
-    pcl::io::savePCDFile(im_path,*cloud);
+    pcl::fromPCLPointCloud2(pcl_pc, cloud);
+    pcl::io::savePCDFile(im_path_pcd,cloud);
+    pcl::io::savePLYFile(im_path_ply,cloud);
     return;
 }
 
