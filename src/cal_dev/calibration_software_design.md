@@ -35,3 +35,4 @@
    Pose.msg:
    Point position (float64 x y z)
    Quaternion orientation (float64 w+xi+yj+zk)
+
